@@ -204,6 +204,7 @@ class Builder:
             "-DOPENCV_INCLUDE_INSTALL_PATH=include",
             "-DOPENCV_3P_LIB_INSTALL_PATH=lib/3rdparty",
             "-DFRAMEWORK_NAME=%s" % self.framework_name,
+            "-DPYTHON_DEFAULT_EXECUTABLE=%s" % sys.executable,
         ]
         if self.dynamic:
             args += [
@@ -258,7 +259,7 @@ class Builder:
         cmakecmd = self.getCMakeArgs(arch, target) + \
             (["-DCMAKE_TOOLCHAIN_FILE=%s" % toolchain] if toolchain is not None else [])
         if target.lower().startswith("iphoneos") or target.lower().startswith("xros"):
-            cmakecmd.append("-DCPU_BASELINE=DETECT")
+            cmakecmd.append("-DCPU_BASELINE=NEON")
         if target.lower().startswith("iphonesimulator") or target.lower().startswith("xrsimulator"):
             build_arch = check_output(["uname", "-m"]).decode('utf-8').rstrip()
             if build_arch != arch:
